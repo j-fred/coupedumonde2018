@@ -16,6 +16,13 @@ app.get('/', function (req, res) {
 });
 
 /**
+ * Route vers equipes.html
+ */
+app.get('/equipes', function (req, res) {
+    res.sendFile(__dirname + '/html/equipes.html');
+});
+
+/**
  * Route vers liste des equipes
  */
 app.get('/get_equipes', function (req, res) {
