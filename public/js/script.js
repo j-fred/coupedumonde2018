@@ -1,7 +1,7 @@
 $(function () {
     $.ajax({
         type: "GET",
-        url: "http://localhost:7777/get_equipes",
+        url: "http://localhost:7777/get_equips",
         success: function (data) {
             console.log(data);
             let html ='';

@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const port = 7777;
 
-app.use("/public",express.static('public'));
+app.use("/public", express.static('public'));
 
 /**
  * Route vers index.html
@@ -25,16 +25,63 @@ app.get('/equipes', function (req, res) {
 /**
  * Route vers liste des equipes
  */
-app.get('/get_equipes', function (req, res) {
-    fs.readFile(__dirname+'/data/equipes.json', "UTF-8", (err, data) => {
+app.get('/get_equips', function (req, res) {
+    console.log( getEquips());
+    fs.readFile(__dirname + '/data/equipes.json', "UTF-8", (err, data) => {
         if (err) throw err;
-        data = JSON.parse(data);
-        res.json(data);
+        equipes = JSON.parse(data);
+        return equipes;
     });
+    res.json(getEquips());
 });
 /**
- * Port d'écoute du serveur
+ * Route vers les groupes
  */
-const listener = app.listen(port, function () {
-    console.log('Serveur demarré sur le port ' + listener.address().port);
-})
+app.get('/get_groups', function (req, res) {
+    console.log( getGroups());
+    res.json( getGroups());
+});
+/**
+* Route vers groupe specifique
+*/
+app.get('/get_groups/:id', function (req, res) {
+    const letter = req.params.id;
+    result = getGroupsById(letter);    
+    console.log( getGroupsById(result));
+    res.json(result);
+});
+
+/**
+ * fonction qui recupère les equipes
+ */
+function getEquips() {
+    let equipes ="";
+    fs.readFile(__dirname + '/data/equipes.json', "UTF-8", (err, data) => {
+        if (err) throw err;
+        equipes = JSON.parse(data);
+        return equipes;
+    });
+}
+/**
+ * fonction qui recupère des groupes
+ */
+function getGroups() {
+    fs.readFile(__dirname + '/data/groups.json', "UTF-8", (err, data) => {
+        if (err) throw err;
+        const groups = JSON.parse(data);
+        return groups;
+    });
+}
+
+function getGroupsById(letter) {
+    const groups = getGroups();
+    group = groups.groups[letter];
+    return group;
+}
+
+    /**
+     * Port d'écoute du serveur
+     */
+    const listener = app.listen(port, function () {
+        console.log('Serveur demarré sur le port ' + listener.address().port);
+    })
